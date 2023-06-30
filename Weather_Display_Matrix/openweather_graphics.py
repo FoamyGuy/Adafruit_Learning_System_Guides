@@ -95,9 +95,6 @@ class OpenWeather_Graphics(displayio.Group):
 
         self.small_font = bitmap_font.load_font(small_font)
         self.medium_font = bitmap_font.load_font(medium_font)
-        glyphs = b"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,.: "
-        self.small_font.load_glyphs(glyphs)
-        self.medium_font.load_glyphs(glyphs)
         self.medium_font.load_glyphs(("°",))  # a non-ascii character we need for sure
 
         self.city_text = None
