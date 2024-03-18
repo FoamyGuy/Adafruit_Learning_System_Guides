@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2022 John Park and Tod Kurt for Adafruit Industries
 # SPDX-License-Identifier: MIT
-# Walkmp3rson digital cassette tape player (ok fine it's just SD cards)
+'''Walkmp3rson digital cassette tape player (ok fine it's just SD cards)'''
+
 import time
 import os
 import board
@@ -83,7 +84,7 @@ audio = audiobusio.I2SOut(bit_clock=board.D24, word_select=board.D25, data=board
 # Feather M4
 # audio = audiobusio.I2SOut(bit_clock=board.D1, word_select=board.D10, data=board.D11)
 mixer = audiomixer.Mixer(voice_count=1, sample_rate=22050, channel_count=1,
-                         bits_per_sample=16, samples_signed=True)
+                         bits_per_sample=16, samples_signed=True, buffer_size=32768)
 mixer.voice[0].level = 0.15
 
 # Colors
@@ -97,7 +98,7 @@ orange_dark = 0x472a16
 
 # display
 main_display_group = displayio.Group()  # everything goes in main group
-display.show(main_display_group)  # show main group (clears screen, too)
+display.root_group = main_display_group  # show main group (clears screen, too)
 
 # background bitmap w OnDiskBitmap
 tape_bitmap = displayio.OnDiskBitmap(open("mp3_tape.bmp", "rb"))
@@ -143,12 +144,15 @@ volume_bar.value = mixer.voice[0].level * 100
 def change_track(tracknum):
     # pylint: disable=global-statement
     global mp3_filename
+    # pylint: disable=global-statement
+    global mp3stream
     mp3_filename = mp3s[tracknum]
     song_name_fc = tracktext(mp3_filename, 2)
     artist_name_fc = tracktext(mp3_filename, 1)
     mp3_file_fc = open(mp3_filename, "rb")
-    mp3stream_fc = audiomp3.MP3Decoder(mp3_file_fc)
-    mp3_bytes_fc = os.stat(mp3_filename)[6]  # size in bytes is position 6
+    mp3stream.file = mp3_file_fc
+    mp3stream_fc = mp3stream
+    mp3_bytes_fc = os.stat(mp3_filename)[6]
     return (mp3_file_fc, mp3stream_fc, song_name_fc, artist_name_fc, mp3_bytes_fc)
 
 print("Walkmp3rson")
