@@ -43,6 +43,7 @@ def _zero_pad(num, count=2):
 
 
 class PollyHTTPClient:
+    # pylint: disable=no-self-use
     def __init__(self, requests_instance, access_key, secret_key, region="us-east-1"):
         self._requests = requests_instance
         self.access_key = access_key
@@ -188,7 +189,7 @@ class PollyHTTPClient:
                 print(f"Response: {response.text}")
                 return None
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print(f"Request failed: {e}")
             return None
 
@@ -234,7 +235,7 @@ def text_to_speech_polly_http(
                 f.write(audio_data)
             print(f"Audio saved to: {output_file}")
             return True
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-except
             print(f"Failed to save file: {e}")
             return False
     else:

@@ -81,12 +81,12 @@ def say_and_spell_lastword():
     """
     Say the last word, then spell it out one letter at a time, finally say it once more.
     """
-    fj.play_mp3_file("saves/awspollyoutput.mp3")
+    fj.play_mp3_file("/saves/awspollyoutput.mp3")
     time.sleep(0.2)
     for letter in lastword:
         fj.play_mp3_file(f"spell_jam_assets/letter_mp3s/{letter.upper()}.mp3")
     time.sleep(0.2)
-    fj.play_mp3_file("saves/awspollyoutput.mp3")
+    fj.play_mp3_file("/saves/awspollyoutput.mp3")
     fj.neopixels.fill(0x000000)
 
 
